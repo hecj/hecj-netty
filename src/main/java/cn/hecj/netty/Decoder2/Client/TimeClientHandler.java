@@ -21,6 +21,7 @@ public class TimeClientHandler extends ChannelHandlerAdapter{
 
     @Override
     public void channelActive(ChannelHandlerContext ctx){
+        // 分隔符 System.getProperty("line.separator")
         byte[] req =("QUERY TIME ORDER" + System.getProperty("line.separator")).getBytes();
         ByteBuf message = null;
         for (int i=0;i<100;i++){
