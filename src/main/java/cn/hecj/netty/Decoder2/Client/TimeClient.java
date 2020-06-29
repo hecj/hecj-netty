@@ -1,4 +1,4 @@
-package cn.hecj.netty.Decoder.Client;
+package cn.hecj.netty.Decoder2.Client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,8 +8,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
+
 /**
- * 存在TCP粘包问题
+ 解决TCP粘包问题
  */
 public class TimeClient {
     public void connect(String host,int port)throws Exception{
@@ -25,6 +28,9 @@ public class TimeClient {
                         @Override
                         public void initChannel(SocketChannel ch)
                                 throws Exception{
+                            // 解决TCP粘包问题
+                            ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
+                            ch.pipeline().addLast(new StringDecoder());
                             ch.pipeline().addLast(new TimeClientHandler());
                         }
                     });

@@ -1,0 +1,38 @@
+package cn.hecj.netty.Decoder2.Server;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerAdapter;
+import io.netty.channel.ChannelHandlerContext;
+
+/**
+ */
+public class TimeServerHandler extends ChannelHandlerAdapter{
+    // 用于网络的读写操作
+    int counter = 0;
+    @Override
+    public void channelRead(ChannelHandlerContext ctx,Object msg)
+            throws Exception{
+        String body = (String)msg;
+        System.out.println("收到客户端消息: " + body);
+        String currentTime = "我是服务端消息"+(++counter);
+        System.out.println("发送消息到客户端 :"+counter);
+        // 分隔符 line.separator
+        currentTime = currentTime+ System.getProperty("line.separator");
+        ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
+        ctx.writeAndFlush(resp);
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx)throws Exception{
+        ctx.flush();   // 它的作用是把消息发送队列中的消息写入SocketChannel中发送给对方
+        // 为了防止频繁的唤醒Selector进行消息发送，Netty的write方法，并不直接将消息写入SocketChannel中
+        // 调用write方法只是把待发送的消息发到缓冲区中，再调用flush，将发送缓冲区中的消息
+        // 全部写到SocketChannel中。
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx,Throwable cause){
+        ctx.close();
+    }
+}
