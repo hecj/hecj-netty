@@ -65,7 +65,7 @@ public class ChatServer {
 						pipeline.addLast(new HttpServerCodec());
 						//用于将HTTP请求进行封装为FullHttpRequest对象
 						pipeline.addLast(new HttpObjectAggregator(1024*64));
-						//处理文件流
+		 				//处理文件流
 						pipeline.addLast(new ChunkedWriteHandler());
 						//Http请求的具体处理对象
 						pipeline.addLast(new HttpHandler());
