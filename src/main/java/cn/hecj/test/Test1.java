@@ -1,6 +1,8 @@
 package cn.hecj.test;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class Test1 {
@@ -88,29 +90,53 @@ public class Test1 {
     }
 
     public static void  main(String[] args){
-        Thread t1 = new Thread(){
-            @Override
-            public void run() {
-                while(true){
-                    try {
-                        Thread.sleep(500l);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("t1 run");
-                }
-            }
-        };
-        t1.setDaemon(true);
-        t1.start();
 
-         try {
-            Thread.sleep(5000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        int width = 720;
+        int height = 1280;
+
+        /**
+         buffer[DEVICE_NAME_FIELD_LENGTH] = (byte) (width >> 8);
+         buffer[DEVICE_NAME_FIELD_LENGTH + 1] = (byte) width;
+         buffer[DEVICE_NAME_FIELD_LENGTH + 2] = (byte) (height >> 8);
+         buffer[DEVICE_NAME_FIELD_LENGTH + 3] = (byte) height;
+         */
+
+
+
+        System.out.println(width >>8);
+        byte lowWidht = (byte)(width >>8);
+        System.out.println(lowWidht);
+
+        int aa = 720;
+        byte ba = (byte)(aa >>8);
+//        System.out.println((UnsignedByte)aa);
+
+        System.out.println(2 << 8);
+
+        System.out.println(512|-48);
+
+        System.out.println(-48 & 0xff);
+
+        send("deviceName",720,1280);
+
     }
 
+    static int DEVICE_NAME_FIELD_LENGTH = 64;
+    private static void send(String deviceName, int width, int height)  {
+        byte[] buffer = new byte[64 + 4];
+
+        byte[] deviceNameBytes = deviceName.getBytes(StandardCharsets.UTF_8);
+        int len = Math.min(64 - 1, deviceNameBytes.length);
+        System.arraycopy(deviceNameBytes, 0, buffer, 0, len);
+        // byte[] are always 0-initialized in java, no need to set '\0' explicitly
+
+        buffer[DEVICE_NAME_FIELD_LENGTH] = (byte) (width >> 8);
+        buffer[DEVICE_NAME_FIELD_LENGTH + 1] = (byte) width;
+        buffer[DEVICE_NAME_FIELD_LENGTH + 2] = (byte) (height >> 8);
+        buffer[DEVICE_NAME_FIELD_LENGTH + 3] = (byte) height;
+
+        System.out.println(buffer);
+    }
 
 
 

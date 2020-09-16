@@ -31,6 +31,8 @@ public class RedisTest {
         JedisSentinelPool pool = new JedisSentinelPool(masterName, sentinels,password); //初始化过程做了很多工作
         Jedis jedis = pool.getResource();
         jedis.set("key2", "value2");
+
+
         pool.close();
     }
 

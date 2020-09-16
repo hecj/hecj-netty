@@ -5,24 +5,18 @@ import java.util.HashSet;
 public class Test {
 
     public static void main(String[] args){
-        boolean isOpen = false;
+        byte[] bs= {-45,120};
 
-        // 如果开启了断言，会将isOpen的值改为true
-        assert isOpen = true;
+        String str = bytes_String16(bs);
+        System.out.println(str);
+    }
 
-        // 打印是否开启了断言，如果为false，则没有启用断言
-        System.out.println(isOpen);
 
-        HashSet s;
-
-        assert 1+1==2;
-        System.out.println(" assert ok");
-        String  num = "1";
-        switch(num){
-            case "b":
-             int a;
+    public static String bytes_String16(byte[] b) {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<b.length;i++) {
+            sb.append(String.format("%02x", b[i])+" ");
         }
-
-
+        return sb.toString();
     }
 }
