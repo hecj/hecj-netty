@@ -1,8 +1,5 @@
 package cn.hecj.scrcpy;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -12,14 +9,16 @@ import java.net.Socket;
  */
 public class ScrcpyClient {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
+        File file = new File("/Users/hecj/Desktop/hecj99/test2/test2.h264");
+        FileOutputStream outputStream = new FileOutputStream(file);
         int port = 27183;
         Socket socket = null;
         InputStream in = null;
         OutputStream out = null;
         try {
-            socket = new Socket("192.168.50.123", port);
+            socket = new Socket("192.168.50.88", port);
             in = socket.getInputStream();
             out = socket.getOutputStream();
 
@@ -29,9 +28,10 @@ public class ScrcpyClient {
                     System.out.println(len);
                     byte[] bytes = new byte[len];
                     in.read(bytes);
+
+                    outputStream.write(bytes);
+                    outputStream.flush();
                 }
-
-
             }
 
         } catch (Exception e) {
