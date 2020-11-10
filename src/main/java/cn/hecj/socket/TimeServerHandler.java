@@ -41,7 +41,7 @@ public class TimeServerHandler implements Runnable {
         try {
             input = socket.getInputStream();
             while (true) {
-                Readkit.readFrom(input);
+                Readkit2.readFrom(input);
             }
 
         } catch (Exception e) {

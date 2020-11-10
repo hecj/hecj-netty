@@ -7,24 +7,24 @@ public class Readkit2 {
     // 存请求头
     private static final ByteBuffer headerBuffer = ByteBuffer.allocate(15);
     private static final ByteBuff dataBuffer = new ByteBuff(1024);
+    private static final int HEAD_LENGTH = 15;
     static int total = 0;
 
     public static void readFrom(InputStream input) throws Exception {
 //        if (isFull()) {
 //            throw new IllegalStateException("Buffer full, call next() to consume");
 //        }
-        if (dataBuffer.getWritePostion() - dataBuffer.getReadPostion() < 15) {
+        if (dataBuffer.getWritePostion() - dataBuffer.getReadPostion() < HEAD_LENGTH) {
             dataBuffer.read(input);
         }
         printByteBuffers(dataBuffer);
         for (int i = dataBuffer.getReadPostion(); i < dataBuffer.getWritePostion() - 2; i++) {
             if ((dataBuffer.get(i) == DataProtocol.Controller.type[0]) && (dataBuffer.get(i + 1) == DataProtocol.Controller.type[1])
                     && (dataBuffer.get(i + 2) == DataProtocol.Controller.type[2])) {
-                System.arraycopy(dataBuffer.array(), i, headerBuffer.array(), 0, 15);
+                System.arraycopy(dataBuffer.array(), i, headerBuffer.array(), 0, HEAD_LENGTH);
                 headerBuffer.position(11);
                 int length = headerBuffer.getInt();
-                System.out.println("读取数据长度length:"+length);
-                if (dataBuffer.getLimit() < length + 15) {
+                if (dataBuffer.getLimit() < length + HEAD_LENGTH) {
                     dataBuffer.read(input);
                     printByteBuffers(dataBuffer);
                     return;
@@ -37,9 +37,12 @@ public class Readkit2 {
 //                    buffer.position(head + length);
 //                    buffer.flip();
 
+                System.out.println("total:"+(++total));
+
                 // 下一个位置
-                dataBuffer.nextBuff(i, 15+length);
+                dataBuffer.nextBuff(i, HEAD_LENGTH+length);
                 if (dataBuffer.getAvaiable() < 256 || dataBuffer.getReadPostion() >512) {
+                    // 复位条件
                     dataBuffer.copyToHead();
                 }
                 printByteBuffers(dataBuffer);

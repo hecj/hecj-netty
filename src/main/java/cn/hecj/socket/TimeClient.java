@@ -55,7 +55,7 @@ public class TimeClient {
 
             for(int i=0;i<2000;i++){
                 System.out.println(i);
-                Thread.sleep(30);
+                Thread.sleep(10);
                 ByteBuffer headerBuffer = ByteBuffer.allocate(11+15);
 //        // 15
                 headerBuffer.put(DataProtocol.Controller.type);
