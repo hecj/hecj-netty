@@ -53,14 +53,14 @@ public class TimeClient {
 
             OutputStream outputStream = socket.getOutputStream();
 
-            for(int i=0;i<200;i++){
+            for(int i=0;i<2000;i++){
                 System.out.println(i);
                 Thread.sleep(30);
                 ByteBuffer headerBuffer = ByteBuffer.allocate(11+15);
 //        // 15
                 headerBuffer.put(DataProtocol.Controller.type);
                 headerBuffer.putLong(System.currentTimeMillis());
-                headerBuffer.putInt(20);
+                headerBuffer.putInt(11);
                 // 类型 1 byte
                 headerBuffer.put((byte)5);
                 // id  1 byte
