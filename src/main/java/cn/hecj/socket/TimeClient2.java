@@ -27,7 +27,7 @@ import java.nio.ByteBuffer;
  * @date 2014年2月14日
  * @version 1.0
  */
-public class TimeClient {
+public class TimeClient2 {
 
     /**
      * @param args
@@ -52,45 +52,14 @@ public class TimeClient {
             in = socket.getInputStream();
 
             OutputStream outputStream = socket.getOutputStream();
+            InputStream inputStream = socket.getInputStream();
 
-            for(int i=0;i<2000;i++){
-                System.out.println(i);
-                Thread.sleep(10);
-                ByteBuffer headerBuffer = ByteBuffer.allocate(11+15);
-//        // 15
-                headerBuffer.put(DataProtocol.Controller.type);
-                headerBuffer.putLong(System.currentTimeMillis());
-                headerBuffer.putInt(11);
-                // 类型 1 byte
-                headerBuffer.put((byte)5);
-                // id  1 byte
-                int id = 1;
-                headerBuffer.put((byte)id);
-
-                //  按下 抬起  1 byte
-                headerBuffer.put((byte)2);
-
-                int x = (int)33;
-                int y = (int)22;
-
-                // 坐标
-                headerBuffer.put((byte) (x >> 8));
-                headerBuffer.put((byte) x);
-                headerBuffer.put((byte) (y >> 8));
-                headerBuffer.put((byte) y);
-                int displayW = 1000;
-                int displayH = 2000;
-                // 屏幕
-                headerBuffer.put((byte) (displayW >> 8));
-                headerBuffer.put((byte) displayW);
-                headerBuffer.put((byte) (displayH >> 8));
-                headerBuffer.put((byte) displayH);
-
-                headerBuffer.flip();
-                outputStream.write(headerBuffer.array());
+            byte[] bytes = new byte[1*1024*1024];
+            while(true){
+                int length = inputStream.read(bytes);
+                System.out.println("读取数据长度:"+length);
+                Thread.sleep(10l);
             }
-
-            outputStream.close();
 
         } catch (Exception e) {
             e.printStackTrace();
