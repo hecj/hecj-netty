@@ -16,7 +16,7 @@ public class UdpReceiver1 {
 
 //        DatagramSocket socket = new DatagramSocket(port, address);
         DatagramSocket socket = new DatagramSocket(port);
-
+        socket.setSoTimeout(3000);
         // 接收
         receive(socket);
 
@@ -35,16 +35,21 @@ public class UdpReceiver1 {
             public void run() {
                 try{
                     while(true){
-                        byte[] buf = new byte[1024];
-                        DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                        socket.receive(packet);
+                        try{
+                            byte[] buf = new byte[1024];
+                            DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                            System.out.println("正在接收数据......");
+                            socket.receive(packet);
 
-                        String getMsg = new String(buf, 0, packet.getLength());
-                        System.out.println("客户端发送的数据为:"+getMsg);
+                            String getMsg = new String(buf, 0, packet.getLength());
+                            System.out.println("客户端发送的数据为:"+getMsg);
 
-                        InetAddress clientAddress = packet.getAddress();
-                        int clientPort = packet.getPort();
-                        sendAddress = packet.getSocketAddress();
+                            InetAddress clientAddress = packet.getAddress();
+                            int clientPort = packet.getPort();
+                            sendAddress = packet.getSocketAddress();
+                        } catch (Exception ex){
+                            ex.printStackTrace();
+                        }
                     }
                 } catch (Exception ex){
                     ex.printStackTrace();
