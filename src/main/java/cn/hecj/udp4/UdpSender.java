@@ -18,7 +18,7 @@ public class UdpSender {
 
         DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length, address, port);
 
-        DatagramSocket socket = new DatagramSocket(port, address);
+        DatagramSocket socket = new DatagramSocket();
         socket.send(datagramPacket);
 
         // 接收服务器反馈的数据

@@ -10,7 +10,7 @@ public class UdpReceiver {
     public static void main(String[] args) throws Exception{
 
         InetAddress address = InetAddress.getByName("127.0.0.1");
-        int port = 8181; // 接收从8081发来的数据
+        int port = 8181; // 接收从8181发来的数据
 
         DatagramSocket socket = new DatagramSocket(port, address);
 
@@ -19,14 +19,15 @@ public class UdpReceiver {
         socket.receive(packet);
 
         String getMsg = new String(buf, 0, packet.getLength());
-        System.out.println(getMsg);
+        System.out.println("客户端发送的数据为:"+getMsg);
 
         InetAddress clientAddress = packet.getAddress();
         int clientPort = packet.getPort();
         SocketAddress sendAddress = packet.getSocketAddress();
         String feedback = "Received";
         byte[] backbuf = feedback.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(backbuf, backbuf.length);
+//        DatagramPacket sendPacket = new DatagramPacket(backbuf, backbuf.length,clientAddress,clientPort);
+        DatagramPacket sendPacket = new DatagramPacket(backbuf, backbuf.length,sendAddress);
         socket.send(sendPacket);
 
         socket.close();
