@@ -55,7 +55,7 @@ public class UdpReceiver1 {
 
 
     public static void send(DatagramSocket socket)throws Exception{
-        for(int i=0;i<1000;i++){
+        for(int i=0;i<100000;i++){
             if(sendAddress == null){
                 System.out.println("sendAddress为空");
                 Thread.sleep(1000l);
