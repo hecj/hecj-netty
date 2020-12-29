@@ -57,7 +57,7 @@ public class UdpReceiver1 {
     public static void send(DatagramSocket socket)throws Exception{
         for(int i=0;i<100000;i++){
             if(sendAddress == null){
-                System.out.println("sendAddress为空");
+                System.out.println(System.currentTimeMillis()+"sendAddress为空");
                 Thread.sleep(1000l);
                 continue;
             }
@@ -67,7 +67,7 @@ public class UdpReceiver1 {
             byte[] backbuf = feedback.getBytes();
   //        DatagramPacket sendPacket = new DatagramPacket(backbuf, backbuf.length,clientAddress,clientPort);
             DatagramPacket sendPacket = new DatagramPacket(backbuf, backbuf.length,sendAddress);
-            System.out.println("发送数据开始:"+sendAddress);
+            System.out.println(System.currentTimeMillis()+"+发送数据开始:"+sendAddress);
             socket.send(sendPacket);
             System.out.println("发送数据完成");
         }

@@ -11,7 +11,7 @@ public class UdpSender1 {
         String msg = "hello world";
         byte[] buf = msg.getBytes();
 
-        InetAddress address = InetAddress.getByName("127.0.0.1");
+        InetAddress address = InetAddress.getByName("test.xylink.cn");
         int port = 8181; // 接收从8081发来的数据
 
         DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length, address, port);
